@@ -1,0 +1,73 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block css %}
+{% endblock %}
+
+
+{% block body %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Custom jumbotron</h1>
+        <p class="col-md-8 fs-4">
+            Total products: <strong>{{products.count}} result(s) found</strong>
+        </p>
+    </div>
+</div>
+<div class="container_fluid ">
+    <div class="row">
+        <div class="col-lg-10 col-md-8 mx-auto">
+            <form action="{% url 'search_products' %}" class="d-flex">
+                <input type="search" name="q" id="q" class="form-control me-2">
+                <button type="submit" class="btn btn-primary mt-2">
+                    Search
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 mx-auto py-5">
+        <div class="table-responsive">
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for product in products %}
+                    <tr class="">
+                        <td scope="row">
+                            <img src="{{product.image.url}}"
+                             class="table-thumb" height="100" alt="{{product.name}}"/>
+                        </td>
+                        <td><strong>{{product.name|title}}</strong></td>
+                        <td>{{product.brand|title}}</td>
+                        <td>{{product.category|title}}</td>
+                        <td>{{product.sprice}}</td>
+                        <td>
+                            <a href="#" class="btn">View</a>
+                            <a href="#" class="btn btn-success">Add to Cart</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center display-5 text-danger">No products Available</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock body %}

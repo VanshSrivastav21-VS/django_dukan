@@ -5,6 +5,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=60, unique=True)
     def __str__(self):
         return self.name
+    
 class Brand(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=60, unique=True)
@@ -13,11 +14,13 @@ class Brand(models.Model):
     favorite = models.BooleanField(default=False)
     def __str__(self):
         return self.name
+    
 class Seller(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
     def __str__(self):
         return self.name
+    
 class Product(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=60, unique=True)
@@ -44,6 +47,7 @@ class ProductImage(models.Model):
             return self.product.name
         
 from django.contrib.auth.models import User
+
 class ProductReview(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='review')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='review')

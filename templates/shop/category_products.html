@@ -9,11 +9,6 @@
         object-fit: cover;
         object-position: top;
     }
-    /* .img-wrapper{
-        width: 100%;
-        object-fit: cover;
-        object-position: top;
-    } */
 
     .banner-img {
         width: 1300px;
@@ -25,8 +20,10 @@
 {% endblock css %}
 
 {% block body %}
-<div class="container-fluid px-0">
-    <img src="{{brand.banner.url}}" alt="{{brand.name}}" class="banner-img">
+<div class="container-fluid px-0 bg-secondary">
+    <h1 class="text-center display-3 text-white">
+        {{category.name}} Products
+    </h1>
 </div>
 <div class="container py-5">
     <div class="row">
