@@ -13,11 +13,18 @@
     {% endif %}
       
     <div class="card-body">
-      <h5 class="card-title">{{product.name}}</h5>
+      <h5 class="card-title">
+        <a class="text-decoration-none" href="{% url 'product_detail' product.slug %}" ></a>
+        {{product.name|truncatechars:30}}
+      </h5>
       <p class="card-text">
         <span class="text-primary fw-bold">₹{{product.sprice}}</span>
         <small class="text-decoration-line-through">{{product.oprice}}</small>
       </p>
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'product_detail' product.slug %}" class="btn btn-primary">View</a>
+      <a href="#" class="btn btn-outline-primary">Add to cart</a>
     </div>
   </div>
 </div>

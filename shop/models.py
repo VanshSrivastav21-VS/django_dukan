@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -46,8 +47,6 @@ class ProductImage(models.Model):
         except:
             return self.product.name
         
-from django.contrib.auth.models import User
-
 class ProductReview(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='review')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='review')
