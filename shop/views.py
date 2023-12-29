@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, Brand, Category, ProductImage, ProductReview
+from .models import Product, Brand, Category, ProductImage, ProductReview, Seller
 from .filters import ProductFilter
 from django.contrib import messages
 
@@ -23,10 +23,10 @@ def brand_products(request, brand):
 
 def category_products(request, category):
     catObj = Category.objects.get(slug=category)
-    products=Product.objects.filter(category=catObj)
+    products = Product.objects.filter(category=catObj)
     return render(request,'shop/category_products.html',{
         'category': catObj,
-        'products':products, 
+        'products': products,
         'brands': Brand.objects.all(),
         'categories': Category.objects.all()
     })
@@ -34,28 +34,38 @@ def category_products(request, category):
 def search_products(request):
     q = request.GET.get('q')
     if q is None:
-        messages.error(request, 'Please entre something to search!')
-    products_list_1 = Product.objects.filter(name__icontains=q)
-    products_list_2 = Product.objects.filter(brand__name__icontains=q)
-    products_list_3 = Product.objects.filter(category__name__icontains=q)
+        messages.error(request, 'Please enter something to search!')
+    product_list_1 = Product.objects.filter(name__icontains=q) # name contains term
+    product_list_2 = Product.objects.filter(brand__name__icontains=q) # brand contains term
+    product_list_3 = Product.objects.filter(category__name__icontains=q) # category contains terms
+    # product_list_4 = Product.objects.filter(description__icontains=q) # description contains terms
     return render(request,'shop/search.html',{
-        'products': products_list_1.union(products_list_2, products_list_3),
+        'products': product_list_1.union(product_list_2, product_list_3),
         'brands': Brand.objects.filter(name__icontains=q),
         'categories': Category.objects.filter(name__icontains=q),
         'q': q,
-        'total_items': products_list_1.count() + products_list_2.count() + products_list_3.count()
     })
 
 def product_detail(request, slug):
     product = Product.objects.get(slug=slug)
-    sim_cat_prod = Product.objects.filter(category=product.category).exclude(slug=slug).order_by('?')[:2]
-
+    sim_cat_products = Product.objects.filter(category=product.category).exclude(slug=slug).order_by('?')[:2] # order by random
+    # todo sim_prod_brand
     reviews = ProductReview.objects.filter(product=product)
-    images = ProductImage.objects.filter(product=product)
-
+    images =  ProductImage.objects.filter(product=product)
     return render(request,'shop/product_detail.html',{
         'product': product,
         'images': images,
         'reviews': reviews,
-        'sim_cat_prod': sim_cat_prod,
+        'sim_cat_products': sim_cat_products,
+    })
+
+def seller_products(request, id):
+    seller = Seller.objects.get(id=id)
+    products=Product.objects.filter(seller=seller)
+    return render(request,'shop/seller_products.html',{
+        'products': products,
+        'seller': seller,
+        'brands': Brand.objects.all(),
+        'categories': Category.objects.all(),
+        'sellers':Seller.objects.all(),
     })
